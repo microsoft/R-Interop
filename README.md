@@ -2,8 +2,8 @@
 .NET managed abstraction layer for communicating with R
 
 ## Installation
-#### [x86]: <https://github.com/Microsoft/R-Interop/blob/master/Binaries/1.0.1.0/RInteropSetup-x86.msi>
-#### [x64]: <https://github.com/Microsoft/R-Interop/blob/master/Binaries/1.0.1.0/RInteropSetup-x64.msi>
+#### [x86]: <https://github.com/Microsoft/R-Interop/releases/download/v1.0.1.0/RInteropSetup-x86.msi>
+#### [x64]: <https://github.com/Microsoft/R-Interop/releases/download/v1.0.1.0/RInteropSetup-x64.msi>
 
 ## Command-line arguments
 ```sh
