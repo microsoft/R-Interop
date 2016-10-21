@@ -2,8 +2,8 @@
 .NET managed abstraction layer for communicating with R
 
 ## Installation
-#### [x86]: To be added
-#### [x64]: To be added
+#### [x86]: <https://github.com/Microsoft/R-Interop/blob/master/Binaries/1.0.1.0/RInteropSetup-x86.msi>
+#### [x64]: <https://github.com/Microsoft/R-Interop/blob/master/Binaries/1.0.1.0/RInteropSetup-x64.msi>
 
 ## Command-line arguments
 ```sh
@@ -45,7 +45,7 @@ client.Initialize(inputMap, outputMap);
 client.Close();
 ```
 
-Call the Initialize endpoint to pass the input and output type Dictionary mapping for your R function.
+Call the Initialize endpoint to pass the input and output type Dictionary mapping for each of your R functions.
 
 #### net.pipe://RInterop/Execute
 Executes the R function provided in the Input object with members describing the parameters. Returns the result as the Output type. The types are as described in the dictionaries initialized when calling the endpoint net.pipe://RInterop/Initialize
