@@ -23,7 +23,7 @@ namespace RInterop
                     .Resolve<ILoggerFactory>("TraceLoggerFactory")
                     .Create("RInterop"));
 
-            Resolve<ILogger>().LogInformation("Type registrations completed");
+            Resolve<ILogger>().LogInformation("Completed registering dependencies");
         }
 
         public static T Resolve<T>()

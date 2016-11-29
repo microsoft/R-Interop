@@ -111,6 +111,7 @@
     <Compile Include="CommandLineOptions.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="DependencyFactory.cs" />
+    <Compile Include="GlobalAssemblyInfo.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="ILoggerFactory.cs" />
     <Compile Include="IR.cs" />
@@ -143,8 +144,34 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Bond.CSharp.5.0.0\build\Bond.CSharp.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Bond.CSharp.5.0.0\build\Bond.CSharp.props'))" />
     <Error Condition="!Exists('..\packages\Bond.CSharp.5.0.0\build\Bond.CSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Bond.CSharp.5.0.0\build\Bond.CSharp.targets'))" />
+    <Error Condition="!Exists('..\packages\MSBuildTasks.1.5.0.214\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuildTasks.1.5.0.214\build\MSBuildTasks.targets'))" />
+  </Target>
+  <PropertyGroup>
+    <Major>1</Major>
+    <Minor>1</Minor>
+  </PropertyGroup>
+  <Choose>
+    <When Condition=" '$(BUILD_BUILDNUMBER)'=='' ">
+      <PropertyGroup>
+        <Build>$([MSBuild]::Modulo($([System.DateTime]::UtcNow.ToString("yyyyMMdd")), 65536))</Build>
+        <Revision>4</Revision>
+        <BUILD_BUILDNUMBER>$(Build).$(Revision)</BUILD_BUILDNUMBER>
+      </PropertyGroup>
+    </When>
+    <When Condition=" '$(BUILD_BUILDNUMBER)'!='' ">
+      <PropertyGroup>
+        <Build>$([MSBuild]::Modulo($([System.Math]::Floor($(BUILD_BUILDNUMBER))), 65536))</Build>
+        <Revision>$(BUILD_BUILDNUMBER.Substring($([MSBuild]::Add($(BUILD_BUILDNUMBER.IndexOf('.')), 1))))</Revision>
+      </PropertyGroup>
+    </When>
+  </Choose>
+  <Target Name="BeforeBuild">
+    <Message Text="AssemblyVersion: $(Major).$(Minor).$(Build).$(Revision)" />
+    <Message Text="AssemblyFileVersion: $(Major).$(Minor).$(BUILD_BUILDNUMBER)" />
+    <AssemblyInfo CodeLanguage="CS" OutputFile="GlobalAssemblyInfo.cs" AssemblyCopyright="Copyright (c) Microsoft Corporation 2016" AssemblyTrademark="" CLSCompliant="false" AssemblyVersion="$(Major).$(Minor).$(Build).$(Revision)" AssemblyFileVersion="$(Major).$(Minor).$(Build).$(Revision)" />
   </Target>
   <Import Project="..\packages\Bond.CSharp.5.0.0\build\Bond.CSharp.targets" Condition="Exists('..\packages\Bond.CSharp.5.0.0\build\Bond.CSharp.targets')" />
+  <Import Project="..\packages\MSBuildTasks.1.5.0.214\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.214\build\MSBuildTasks.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
