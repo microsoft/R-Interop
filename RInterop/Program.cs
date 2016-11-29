@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Description;
@@ -12,15 +13,16 @@ namespace RInterop
         {
             ILogger logger = DependencyFactory.Resolve<ILogger>();
 
+            logger.LogInformation(string.Format(CultureInfo.InvariantCulture, "Working directory: {0}", Environment.CurrentDirectory));
+            logger.LogInformation(string.Format(CultureInfo.InvariantCulture, "Arguments: {0}", string.Join(" ", args)));
+
             var options = new CommandLineOptions();
             if (!CommandLineOptions.ParseArguments(args, options))
             {
-                DependencyFactory.Resolve<ILogger>().LogInformation("Invalid arguments", args);
+                DependencyFactory.Resolve<ILogger>().LogInformation(string.Format(CultureInfo.InvariantCulture, "Invalid arguments {0}", string.Join(" ", args)));
 
-                logger.LogInformation(@"Usage");
-                logger.LogInformation(@"RInterop.exe --s ""<path to schema.dll>"" --r ""<path to R package file>""");
-                logger.LogInformation(@"Example:");
-                logger.LogInformation(@"RInterop.exe --s ""C:\Temp\Schemas.dll"" --r ""C:\Temp\RPackage.zip""");
+                logger.LogInformation(@"Usage: RInterop.exe --s ""<path to schema.dll>"" --r ""<path to R package file>""");
+                logger.LogInformation(@"Example: RInterop.exe --s ""C:\Temp\Schemas.dll"" --r ""C:\Temp\RPackage.zip""");
                 logger.LogInformation("Press any key to continue...");
                 Console.ReadLine();
                 return;
@@ -36,13 +38,13 @@ namespace RInterop
                 logger.LogInformation("Exception while extracting R package name: {0}", exception);
                 return;
             }
-
-            Config.RPackagePath = options.RPackagePath;
+            
             Config.SchemaBinaryPath = options.SchemaBinaryPath;
+            REngineWrapper.InstallPackages(options.RPackagePath, options.SchemaBinaryPath);
 
             StartService();
         }
-
+        
         private static void StartService()
         {
             EventWaitHandle startedEvent = new EventWaitHandle(false, EventResetMode.ManualReset, @"Global\RInteropStarted");
@@ -81,7 +83,7 @@ namespace RInterop
                 host.AddServiceEndpoint(typeof(IR), new NetNamedPipeBinding(), "");
 
                 host.Open();
-
+                
                 startedEvent.Set();
 
                 DependencyFactory.Resolve<ILogger>().LogInformation("Service is available. Press <ENTER> to exit.");

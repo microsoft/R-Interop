@@ -62,12 +62,12 @@ namespace RInterop
                 }
                 catch (Exception e)
                 {
-                    _logger.LogInformation("Exception during evaluation {0}", e);
+                    _logger.LogInformation(string.Format(CultureInfo.InvariantCulture, "Exception during evaluation {0}", e));
                     return null;
                 }
             }
         }
-        
+
         public void Initialize(Dictionary<string, string> inputTypeMap, Dictionary<string, string> outputTypeMap)
         {
             Assembly assembly = Assembly.LoadFrom(Config.SchemaBinaryPath);
@@ -77,6 +77,7 @@ namespace RInterop
                 Config.SerializationTypeMaps.InputTypeMap[key] = assembly
                     .GetTypes()
                     .First(a => a.FullName.Equals(inputTypeMap[key]));
+                _logger.LogInformation(string.Format(CultureInfo.InvariantCulture, "Got input type mapping: {0} > {1}", key, inputTypeMap[key]));
             }
 
             foreach (string key in outputTypeMap.Keys)
@@ -84,6 +85,7 @@ namespace RInterop
                 Config.SerializationTypeMaps.OutputTypeMap[key] = assembly
                     .GetTypes()
                     .First(a => a.FullName.Equals(outputTypeMap[key]));
+                _logger.LogInformation(string.Format(CultureInfo.InvariantCulture, "Got output type mapping: {0} > {1}", key, outputTypeMap[key]));
             }
         }
     }
