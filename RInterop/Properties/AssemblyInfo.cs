@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("RInterop")]
-//[assembly: AssemblyCopyright("Copyright ©  2016")]    // Added in generated GlobalAssemblyInfo.cs file
+//[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-//[assembly: AssemblyVersion("0.4.7.0")]                // Added in generated GlobalAssemblyInfo.cs file
-//[assembly: AssemblyFileVersion("0.4.7.0")]            // Added in generated GlobalAssemblyInfo.cs file
+//[assembly: AssemblyVersion("0.4.7.0")]
+//[assembly: AssemblyFileVersion("0.4.7.0")]

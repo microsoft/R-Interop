@@ -1,0 +1,21 @@
+﻿namespace RInterop
+
+using Type = int64;
+
+struct SerializationTypeMap
+{
+    0: map<string, Type> InputTypeMap;
+    1: map<string, Type> OutputTypeMap;
+}
+
+struct Map
+{
+	0: string Function;
+	1: string InputType;
+	2: string OutputType;
+}
+
+struct TypeMap
+{
+	0: vector<Map> Mapping;
+}
