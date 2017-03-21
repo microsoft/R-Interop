@@ -41,8 +41,7 @@ namespace RInterop
             if (!Directory.Exists(userDirectory)) Directory.CreateDirectory(userDirectory);
             engine.Evaluate($@".libPaths(""{userDirectory}"")");
             engine.Evaluate(@".libPaths()");
-            engine.Evaluate(string.Format(
-                CultureInfo.InvariantCulture,
+            engine.Evaluate(string.Format(CultureInfo.InvariantCulture,
                 @"install.packages(""{0}"", verbose = TRUE, dependencies = TRUE, type = ""win.binary"")",
                 rPackagePath.Replace(@"\", @"\\")));
 

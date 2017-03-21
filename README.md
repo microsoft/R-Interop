@@ -12,11 +12,14 @@
 
 --rpackage Path to R package file containing statistical functions (optional if packages are already installed)
 --r Same as --rpackage
+
+--typemap Mapping from R function to input and output type schema.
+--t Same as --typemap
 ```
 
 ## Example
 ```sh
-RInterop.exe --r C:\RPackages\MyStatsPackage_0.1.zip --s C:\RPackages\Schemas.dll
+RInterop.exe --r C:\RPackages\MyStatsPackage_0.1.zip --s C:\RPackages\Schemas.dll --t C:\RPackages\TypeMap.json
 ```
 
 ## Overview
@@ -27,13 +30,13 @@ R Interop starts a WCF service with named-pipe endpoints for inter process commu
 4. R Interop deserializes the output and returns to client application
 
 ## Named pipe endpoints
-R Interop makes available 3 endpoints.
+R Interop makes available 2 endpoints.
 
 #### net.pipe://RInterop/
-Metadata endpoint for generating a service reference
+Metadata exchange (MEX) endpoint for generating a service reference.
 
 #### net.pipe://RInterop/Initialize
-R Interop communicates with R through a simple JSON serialization/deserialization contract. The contract with R package expects an input type, an output type and the R function name, at minimum. There are two dictionaries - one for Input and one for Output - that enable this contract to be successfully created between the client application and R Interop. The key for the dictionary is the R function name. The value is the type provided in the class library passed as the --schema parameter. 
+R Interop communicates with R through a simple JSON serialization/deserialization contract. The contract with R package expects an input type, an output type and the R function name. There are two dictionaries of R function to schema mapping - one for Input schema and one for Output schema. This mapping enables the contract to be successfully established between the client application and R Interop. The TypeMap.json contains the mapping from R function to the fully qualified type names for Input and Output. The keys for the dictionaries are the R function names. The value is the type provided in the class library passed as the --schema parameter. 
 
 For example, use the following code to initialize the type mapping for the R function.
 ```sh

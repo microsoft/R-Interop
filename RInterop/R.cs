@@ -69,16 +69,14 @@ namespace RInterop
                 {
                     string reason = string.Format(CultureInfo.InvariantCulture,
                         @"Could not find function ""{0}"" in the TypeMap.json configuration. Exception: {1}",
-                        input.config.fn,
-                        e);
+                        input.config.fn, e);
                     _logger.LogError(reason);
                     throw new FaultException(new FaultReason(reason));
                 }
                 catch (Exception e)
                 {
                     string reason = string.Format(CultureInfo.InvariantCulture,
-                        "Evaluation failed. Exception: {0}",
-                        e);
+                        "Evaluation failed. Exception: {0}", e);
                     _logger.LogError(reason);
                     throw new FaultException(new FaultReason(reason));
                 }
