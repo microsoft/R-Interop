@@ -35,20 +35,5 @@ R Interop makes available 2 endpoints.
 #### net.pipe://RInterop/
 Metadata exchange (MEX) endpoint for generating a service reference.
 
-#### net.pipe://RInterop/Initialize
-R Interop communicates with R through a simple JSON serialization/deserialization contract. The contract with R package expects an input type, an output type and the R function name. There are two dictionaries of R function to schema mapping - one for Input schema and one for Output schema. This mapping enables the contract to be successfully established between the client application and R Interop. The TypeMap.json contains the mapping from R function to the fully qualified type names for Input and Output. The keys for the dictionaries are the R function names. The value is the type provided in the class library passed as the --schema parameter. 
-
-For example, use the following code to initialize the type mapping for the R function.
-```sh
-Dictionary<string, string> inputMap["DistributionTest"] = "Schemas.TTest.Input";
-Dictionary<string, string> outputMap["DistributionTest"] = "Schemas.TTest.Output";
-
-RClient client = new RClient("NetNamedPipeBinding_IR1");
-client.Initialize(inputMap, outputMap);
-client.Close();
-```
-
-Call the Initialize endpoint to pass the input and output type Dictionary mapping for each of your R functions.
-
 #### net.pipe://RInterop/Execute
 Executes the R function provided in the Input object with members describing the parameters. Returns the result as the Output type. The types are as described in the dictionaries initialized when calling the endpoint net.pipe://RInterop/Initialize
