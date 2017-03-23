@@ -2,6 +2,7 @@
 .NET managed abstraction layer for communicating with R
 
 ## Installation
+Please note that there are breaking changes in terms of how RInterop works as well as command line arguments it takes in to start up. 
 #### <https://github.com/Microsoft/R-Interop/releases/download/v2.0/RInteropSetup.msi>
 
 ## Command-line arguments
@@ -37,11 +38,11 @@ R Interop makes available 2 endpoints.
 Metadata exchange (MEX) endpoint for generating a service reference within the client or caller application.
 
 #### net.pipe://RInterop/Execute
-Executes the R function provided in the Input object with members describing the parameters. Returns the result as the corresponding Output type. The types are as described in the dictionaries provided in TypeMap.json.
+Executes the R function provided in the Input object with members describing the parameters. Returns the result as the corresponding Output type. The types are as described in the dictionaries provided in TypeMap.json that map to the types in the Schemas assembly.
 
 The format of TypeMap.json is as follows:
 
-```sh
+```
 {
   "Mapping": [
     {
@@ -57,3 +58,7 @@ The format of TypeMap.json is as follows:
   ]
 }
 ```
+
+## Windows events to note
+When RInterop starts up successfully, it will fire an event named ```Global\RInteropStarted```.
+When RInterop is unable to start up successfully, it will fire an event named ```Global\RInteropStartupError``` and exit. The logs located in the ```%temp%\RInterop``` folder will help diagnose and/or resolve issues. Feel free to post questions on Github.
