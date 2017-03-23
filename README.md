@@ -6,7 +6,7 @@ Please note that there are breaking changes in terms of how RInterop works as we
 #### <https://github.com/Microsoft/R-Interop/releases/download/v2.0/RInteropSetup.msi>
 
 ## Command-line arguments
-```sh
+```
 --schema Path to schema binary file containing types to serialize and deserialize input data and output data sent to and received from the R package, respectively
 --s Same as -schema
 
@@ -18,7 +18,7 @@ Please note that there are breaking changes in terms of how RInterop works as we
 ```
 
 ## Example
-```sh
+```
 RInterop.exe --r C:\RPackages\MyStatsPackage_0.1.zip --s C:\RPackages\Schemas.dll --t C:\RPackages\TypeMap.json
 ```
 
@@ -59,6 +59,6 @@ The format of TypeMap.json is as follows:
 }
 ```
 
-## Windows events to note
+## Windows events for developers
 When RInterop starts up successfully, it will fire an event named ```Global\RInteropStarted```.
 When RInterop is unable to start up successfully, it will fire an event named ```Global\RInteropStartupError``` and exit. The logs located in the ```%temp%\RInterop``` folder will help diagnose and/or resolve issues. Feel free to post questions on Github.
