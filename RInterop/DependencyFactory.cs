@@ -1,36 +1,25 @@
-﻿using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Configuration;
-using System.Configuration;
+﻿using Logging;
+using Microsoft.Practices.Unity;
 
 namespace RInterop
 {
     public class DependencyFactory
     {
-        public static IUnityContainer Container { get; private set; }
-
-        static DependencyFactory()
+        public static void Initialize()
         {
             var container = new UnityContainer();
-
-            var section = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
-            section?.Configure(container);
             Container = container;
-
-            Container.RegisterType<ILoggerFactory>("TraceLoggerFactory",
-                new InjectionFactory(c => new TraceLoggerFactory()));
-            Container.RegisterInstance<ILogger>(
-                Container
-                    .Resolve<ILoggerFactory>("TraceLoggerFactory")
-                    .Create("RInterop"));
-
+            Container.RegisterInstance<ILogger>(new TraceLogger("%temp%", "RInterop"));
             Resolve<ILogger>().LogInformation("Completed registering dependencies");
         }
+
+        public static IUnityContainer Container { get; private set; }
 
         public static T Resolve<T>()
         {
             T ret = default(T);
 
-            if (Container.IsRegistered(typeof(T)))
+            if (Container.IsRegistered(typeof (T)))
             {
                 ret = Container.Resolve<T>();
             }

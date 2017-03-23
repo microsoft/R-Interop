@@ -6,12 +6,10 @@ using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
 
-namespace RInterop
+namespace Logging
 {
     public class TraceLogger : ILogger
     {
-        private TraceSource TraceSource { get; }
-
         public TraceLogger(string rootFolder, string prefix)
         {
             TraceSource = new TraceSource(prefix, SourceLevels.All);
@@ -21,8 +19,8 @@ namespace RInterop
 
             string logFilePath = Path.Combine(rootFolder,
                 string.Format(CultureInfo.InvariantCulture, "{0}_{1}.log",
-                prefix,
-                DateTime.UtcNow.Ticks));
+                    prefix,
+                    DateTime.UtcNow.Ticks));
 
             Trace.AutoFlush = true;
 
@@ -65,7 +63,9 @@ namespace RInterop
                     newLogFilename = f.FullName;
                     break;
                 }
-                catch { }   // This log file is in use -- try next 
+                catch
+                {
+                } // This log file is in use -- try next 
             }
 
             // If we didn't find a reusable log file, we'll create a new using the next available log file number
@@ -77,23 +77,46 @@ namespace RInterop
                     Path.GetDirectoryName(Path.Combine(Environment.CurrentDirectory, logFilePath)),
                     Path.GetFileNameWithoutExtension(logFilePath),
                     maxLogFileNumber.ToString("000", CultureInfo.InvariantCulture),
-                    Path.GetExtension(logFilePath));    // e.g. "logFilename.001.log"
+                    Path.GetExtension(logFilePath)); // e.g. "logFilename.001.log"
             }
 
-            if (File.Exists(newLogFilename)) { File.Delete(newLogFilename); }
+            if (File.Exists(newLogFilename))
+            {
+                File.Delete(newLogFilename);
+            }
 
             // Hook up the log file as a trace listener
             FileStream fstream = new FileStream(newLogFilename,
                 FileMode.Create,
                 FileSystemRights.WriteData,
                 FileShare.Read,
-                (int)Math.Pow(2, 10),
+                (int) Math.Pow(2, 10),
                 FileOptions.None,
                 GetFileSecurity());
 
             TraceListener traceListener = new TextWriterTraceListener(fstream);
             traceListener.Filter = new EventTypeFilter(SourceLevels.All);
             TraceSource.Listeners.Add(traceListener);
+        }
+
+        private TraceSource TraceSource { get; }
+
+        public void LogInformation(string message)
+        {
+            TraceSource.TraceEvent(TraceEventType.Information, 0, string.Format(CultureInfo.InvariantCulture, "{0:O} {1}", DateTime.UtcNow,
+                message));
+        }
+
+        public void LogError(string message)
+        {
+            TraceSource.TraceEvent(TraceEventType.Error, 0, string.Format(CultureInfo.InvariantCulture, "{0:O} {1}", DateTime.UtcNow,
+                message));
+        }
+
+        public void Close()
+        {
+            TraceSource.Flush();
+            TraceSource.Close();
         }
 
         public static FileSecurity GetFileSecurity()
@@ -154,40 +177,17 @@ namespace RInterop
 
             return fss;
         }
-
-        public void LogInformation(string message, params object[] parameters)
-        {
-            TraceSource.TraceInformation(string.Format(CultureInfo.InvariantCulture, "{0:O} {1}", DateTime.UtcNow, message, parameters));
-        }
-
-        public void Close()
-        {
-            TraceSource.Flush();
-            TraceSource.Close();
-        }
-
-        private string GetCallingFunction()
-        {
-            StackFrame frame = new StackTrace().GetFrame(3);
-            var declaringType = frame.GetMethod().DeclaringType;
-            if (declaringType != null)
-            {
-                string callingFunction = string.Format(CultureInfo.InvariantCulture, "{0}.{1}", declaringType.FullName, frame.GetMethod().Name);
-                return callingFunction;
-            }
-            return string.Empty;
-        }
     }
 
     /// <summary>
     /// Used to sort an array of FileInfo objects by filename.
     /// </summary>
-    class CompareFileInfoNames : IComparer
+    internal class CompareFileInfoNames : IComparer
     {
         public int Compare(object x, object y)
         {
-            FileInfo firstFile = (FileInfo)x;
-            FileInfo secondFile = (FileInfo)y;
+            FileInfo firstFile = (FileInfo) x;
+            FileInfo secondFile = (FileInfo) y;
             return string.CompareOrdinal(firstFile.FullName, secondFile.FullName);
         }
     }

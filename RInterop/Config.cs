@@ -6,6 +6,6 @@
 
         public static string RPackageName { get; set; }
         
-        public static SerializationTypeMaps SerializationTypeMaps { get; set; }
+        public static SerializationTypeMap SerializationTypeMap { get; set; }
     }
 }

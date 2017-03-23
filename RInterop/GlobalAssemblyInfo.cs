@@ -10,7 +10,7 @@
 
 [assembly: System.Reflection.AssemblyCopyright("Copyright (c) Microsoft Corporation 2016")]
 [assembly: System.CLSCompliant(false)]
-[assembly: System.Reflection.AssemblyVersion("1.1.41577.4")]
-[assembly: System.Reflection.AssemblyFileVersion("1.1.41577.4")]
+[assembly: System.Reflection.AssemblyVersion("1.2.3.4")]
+[assembly: System.Reflection.AssemblyFileVersion("1.2.3.4")]
 
 

@@ -1,9 +1,0 @@
-﻿namespace RInterop
-
-using Type = int64;
-
-struct SerializationTypeMaps
-{
-    0: map<string, Type> InputTypeMap;
-    1: map<string, Type> OutputTypeMap;
-}
