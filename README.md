@@ -2,8 +2,7 @@
 .NET managed abstraction layer for communicating with R
 
 ## Installation
-#### [x86]: <https://github.com/Microsoft/R-Interop/releases/download/v1.1.41577.1/RInteropSetup-x86.msi>
-#### [x64]: <https://github.com/Microsoft/R-Interop/releases/download/v1.1.41577.1/RInteropSetup-x64.msi>
+#### <https://github.com/Microsoft/R-Interop/releases/download/v2.0/RInteropSetup.msi>
 
 ## Command-line arguments
 ```sh
@@ -24,16 +23,37 @@ RInterop.exe --r C:\RPackages\MyStatsPackage_0.1.zip --s C:\RPackages\Schemas.dl
 
 ## Overview
 R Interop starts a WCF service with named-pipe endpoints for inter process communication. Your application talks to R Interop through the named pipe. The following are the steps involved:
-1. Client application sends request to R Interop as an Input object
-2. R Interop serializes the input object and sends the request to R package loaded in R
-3. R function evaluates the input object and returns the output
-4. R Interop deserializes the output and returns to client application
+1. Client application sends request to R Interop as an Input object.
+2. R Interop serializes the input object and sends the request to R package loaded in R.
+3. R function evaluates the input object and returns the output.
+4. R Interop deserializes the output and returns it to client application.
+
+Note that both the client application and RInterop utilize the same Schemas library so that they can understand each other.
 
 ## Named pipe endpoints
 R Interop makes available 2 endpoints.
 
 #### net.pipe://RInterop/
-Metadata exchange (MEX) endpoint for generating a service reference.
+Metadata exchange (MEX) endpoint for generating a service reference within the client or caller application.
 
 #### net.pipe://RInterop/Execute
-Executes the R function provided in the Input object with members describing the parameters. Returns the result as the Output type. The types are as described in the dictionaries initialized when calling the endpoint net.pipe://RInterop/Initialize
+Executes the R function provided in the Input object with members describing the parameters. Returns the result as the corresponding Output type. The types are as described in the dictionaries provided in TypeMap.json.
+
+The format of TypeMap.json is as follows:
+
+```sh
+{
+  "Mapping": [
+    {
+      "Function": "TTest",
+      "InputType": "Schemas.TTest.Input",
+      "OutputType": "Schemas.TTest.Output"
+    },
+    {
+      "Function": "ChiSquareTest",
+      "InputType": "Schemas.ChiSquareTest.Input",
+      "OutputType": "Schemas.ChiSquareTest.Output"
+    }
+  ]
+}
+```
