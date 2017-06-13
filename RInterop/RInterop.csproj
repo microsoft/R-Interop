@@ -158,7 +158,7 @@
   <Choose>
     <When Condition=" '$(BUILD_BUILDNUMBER)'!='' ">
       <PropertyGroup>
-        <Major>2</Major>
+        <Major>3</Major>
         <Minor>0</Minor>
         <Build>$([MSBuild]::Modulo($([System.Math]::Floor($(BUILD_BUILDNUMBER))), 65536))</Build>
         <Revision>$(BUILD_BUILDNUMBER.Substring($([MSBuild]::Add($(BUILD_BUILDNUMBER.IndexOf('.')), 1))))</Revision>
