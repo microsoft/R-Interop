@@ -48,20 +48,6 @@ namespace RInterop
                     LogUsage();
                     return;
                 }
-
-                try
-                {
-                    REngineWrapper.InstallPackages(options.RPackagePath);
-                }
-                catch (Exception exception)
-                {
-                    EventWaitHandle startupErrorEvent = new EventWaitHandle(false, EventResetMode.ManualReset,
-                        @"Global\RInteropStartupError");
-                    startupErrorEvent.Set();
-                    _logger.LogError(string.Format(CultureInfo.InvariantCulture,
-                        "Exiting. Exception while installing packages: {0}", exception));
-                    return;
-                }
             }
 
             if (!string.IsNullOrEmpty(options.TypeMapJsonPath))
