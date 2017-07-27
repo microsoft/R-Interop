@@ -3,7 +3,7 @@
 
 ## Installation
 Please note that there are breaking changes in terms of how RInterop works as well as command line arguments it takes in to start up. 
-#### <https://github.com/Microsoft/R-Interop/releases/download/3.0.51061.5/RInteropSetup.msi>
+#### <https://github.com/Microsoft/R-Interop/releases/download/v3.0.51061.5/RInteropSetup.msi>
 
 ## Command-line arguments
 ```
