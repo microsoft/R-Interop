@@ -3,7 +3,7 @@
 
 ## Installation
 Please note that there are breaking changes in terms of how RInterop works as well as command line arguments it takes in to start up. 
-#### <https://github.com/Microsoft/R-Interop/releases/download/v2.0.50770.2/RInteropSetup.msi>
+#### <https://github.com/Microsoft/R-Interop/releases/download/3.0.51061.5/RInteropSetup.msi>
 
 ## Command-line arguments
 ```
@@ -37,8 +37,10 @@ R Interop makes available 2 endpoints.
 #### net.pipe://RInterop/
 Metadata exchange (MEX) endpoint for generating a service reference within the client or caller application.
 
-#### net.pipe://RInterop/Execute
+#### net.pipe://RInterop/R
 Executes the R function provided in the Input object with members describing the parameters. Returns the result as the corresponding Output type. The types are as described in the dictionaries provided in TypeMap.json that map to the types in the Schemas assembly.
+
+There are 3 Operations that can be performed on this API - Execute, InstallPackage, and RemovePackage. When a Service Reference is created, these operations will be available as methods on the Client object.
 
 The format of TypeMap.json is as follows:
 

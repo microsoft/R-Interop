@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using Logging;
@@ -81,6 +82,36 @@ namespace RInterop
                     throw new FaultException(new FaultReason(reason));
                 }
             }
+        }
+
+        public bool InstallPackage(string packagePath)
+        {
+            var logger = DependencyFactory.Resolve<ILogger>();
+            var userDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "DEARPackages").Replace("\\", "/");
+            if (!Directory.Exists(userDirectory)) Directory.CreateDirectory(userDirectory);
+            _engine.Evaluate($@".libPaths(""{userDirectory}"")");
+            _engine.Evaluate(@".libPaths()");
+            _engine.Evaluate(string.Format(CultureInfo.InvariantCulture,
+                @"install.packages(""{0}"", dependencies = TRUE, repos = NULL, verbose = TRUE, type = ""win.binary"")",
+                packagePath.Replace(@"\", @"\\")));
+
+            logger.LogInformation(string.Format(CultureInfo.InvariantCulture, @"Installed R package ""{0}""", packagePath));
+            
+            return true;
+        }
+
+        public bool RemovePackage(string packageName)
+        {
+            var logger = DependencyFactory.Resolve<ILogger>();
+            var userDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "DEARPackages").Replace("\\", "/");
+            if (!Directory.Exists(userDirectory)) Directory.CreateDirectory(userDirectory);
+            _engine.Evaluate($@".libPaths(""{userDirectory}"")");
+            _engine.Evaluate(@".libPaths()");
+            _engine.Evaluate(string.Format(CultureInfo.InvariantCulture, @"remove.packages(""{0}"")", packageName));
+
+            logger.LogInformation(string.Format(CultureInfo.InvariantCulture, @"Removed R package ""{0}""", packageName));
+
+            return true;
         }
     }
 }

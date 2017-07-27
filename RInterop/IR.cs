@@ -8,5 +8,11 @@ namespace RInterop
     {
         [OperationContract]
         object Execute(dynamic input);
+
+        [OperationContract]
+        bool InstallPackage(string packagePath);
+
+        [OperationContract]
+        bool RemovePackage(string packageName);
     }
 }
