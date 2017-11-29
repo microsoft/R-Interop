@@ -53,6 +53,7 @@ namespace RInterop
         private void HostOnOpened(object sender, EventArgs eventArgs)
         {
             DependencyFactory.Resolve<ILogger>().LogInformation("Service is available. Press <ENTER> to exit.");
+            DependencyFactory.Resolve<ILogger>().LogInformation(string.Format(CultureInfo.InvariantCulture, @"R Path : ""{0}""", new RDotNet.NativeLibrary.NativeUtility().FindRPath()));
             _startedEvent.Set();
         }
 
